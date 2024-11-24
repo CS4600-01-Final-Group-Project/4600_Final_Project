@@ -39,6 +39,12 @@
     <ClCompile Include="Networking.cpp">
       <Filter>Source Files\Logic</Filter>
     </ClCompile>
+    <ClCompile Include="encode.cpp">
+      <Filter>Source Files\Encryption</Filter>
+    </ClCompile>
+    <ClCompile Include="decode.cpp">
+      <Filter>Source Files\Decryption</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h">
@@ -77,6 +83,36 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="sfml-window-d-2.dll">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="p_minimal.dll">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="p_test.dll">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="padlock.dll">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="ossltest.dll">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="legacy.dll">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="libcrypto-3-x64.dll">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="libssl-3-x64.dll">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="loader_attic.dll">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="capi.dll">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="dasync.dll">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

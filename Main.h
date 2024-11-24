@@ -3,6 +3,16 @@
 
 #include <iostream>
 #include <SFML/Graphics.hpp>
+#include <openssl/rsa.h>
+#include <openssl/pem.h>
+#include <openssl/aes.h>
+#include <openssl/rand.h>
+#include <openssl/evp.h>
+#include <openssl/hmac.h>
+#include <iostream>
+#include <vector>
+#include <fstream>
+#include <cstring>
 
 class SFMLApp
 {
