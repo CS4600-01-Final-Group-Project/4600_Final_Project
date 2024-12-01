@@ -16,104 +16,158 @@
     <Filter Include="Source Files\Logic">
       <UniqueIdentifier>{93aa5593-6722-4ba9-bb60-26ac426cc6cf}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Encryption">
-      <UniqueIdentifier>{7b33bd33-65c0-4192-b180-df3a960225f0}</UniqueIdentifier>
+    <Filter Include="Resource Files\MessagerTexture">
+      <UniqueIdentifier>{892ce966-559b-4220-817f-fc9226738ba0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Decryption">
+    <Filter Include="Resource Files\Dependencies">
+      <UniqueIdentifier>{5f8d4cf8-bd77-4cb6-a1da-d2350662b95b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Communication">
+      <UniqueIdentifier>{a8f73b92-f691-4507-b1a2-93509f7eb403}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Communication\Decryption">
       <UniqueIdentifier>{cf7e9a0a-6497-4837-9766-425dd2f2e291}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Communication\Encryption">
+      <UniqueIdentifier>{7b33bd33-65c0-4192-b180-df3a960225f0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Update.cpp">
-      <Filter>Source Files\Logic</Filter>
-    </ClCompile>
-    <ClCompile Include="ProccessEvents.cpp">
-      <Filter>Source Files\Logic</Filter>
-    </ClCompile>
-    <ClCompile Include="Render.cpp">
-      <Filter>Source Files\Logic</Filter>
-    </ClCompile>
-    <ClCompile Include="Networking.cpp">
-      <Filter>Source Files\Logic</Filter>
-    </ClCompile>
-    <ClCompile Include="encode.cpp">
-      <Filter>Source Files\Encryption</Filter>
-    </ClCompile>
-    <ClCompile Include="decode.cpp">
-      <Filter>Source Files\Decryption</Filter>
-    </ClCompile>
+    <None Include="capi.dll">
+      <Filter>Resource Files\Dependencies</Filter>
+    </None>
+    <None Include="dasync.dll">
+      <Filter>Resource Files\Dependencies</Filter>
+    </None>
+    <None Include="legacy.dll">
+      <Filter>Resource Files\Dependencies</Filter>
+    </None>
+    <None Include="libcrypto-3-x64.dll">
+      <Filter>Resource Files\Dependencies</Filter>
+    </None>
+    <None Include="libssl-3-x64.dll">
+      <Filter>Resource Files\Dependencies</Filter>
+    </None>
+    <None Include="loader_attic.dll">
+      <Filter>Resource Files\Dependencies</Filter>
+    </None>
+    <None Include="openal32.dll">
+      <Filter>Resource Files\Dependencies</Filter>
+    </None>
+    <None Include="ossltest.dll">
+      <Filter>Resource Files\Dependencies</Filter>
+    </None>
+    <None Include="p_minimal.dll">
+      <Filter>Resource Files\Dependencies</Filter>
+    </None>
+    <None Include="p_test.dll">
+      <Filter>Resource Files\Dependencies</Filter>
+    </None>
+    <None Include="padlock.dll">
+      <Filter>Resource Files\Dependencies</Filter>
+    </None>
+    <None Include="sfml-audio-2.dll">
+      <Filter>Resource Files\Dependencies</Filter>
+    </None>
+    <None Include="sfml-audio-d-2.dll">
+      <Filter>Resource Files\Dependencies</Filter>
+    </None>
+    <None Include="sfml-graphics-2.dll">
+      <Filter>Resource Files\Dependencies</Filter>
+    </None>
+    <None Include="sfml-graphics-d-2.dll">
+      <Filter>Resource Files\Dependencies</Filter>
+    </None>
+    <None Include="sfml-network-2.dll">
+      <Filter>Resource Files\Dependencies</Filter>
+    </None>
+    <None Include="sfml-network-d-2.dll">
+      <Filter>Resource Files\Dependencies</Filter>
+    </None>
+    <None Include="sfml-system-2.dll">
+      <Filter>Resource Files\Dependencies</Filter>
+    </None>
+    <None Include="sfml-system-d-2.dll">
+      <Filter>Resource Files\Dependencies</Filter>
+    </None>
+    <None Include="sfml-window-2.dll">
+      <Filter>Resource Files\Dependencies</Filter>
+    </None>
+    <None Include="sfml-window-d-2.dll">
+      <Filter>Resource Files\Dependencies</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Main.h">
+    <Image Include="Resources\Selectionbar.png">
+      <Filter>Resource Files\MessagerTexture</Filter>
+    </Image>
+    <Image Include="Resources\Slidingbar.png">
+      <Filter>Resource Files\MessagerTexture</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="Resources\Pacifico.ttf">
+      <Filter>Resource Files\MessagerTexture</Filter>
+    </Font>
+    <Font Include="Resources\KGHAPPY.ttf">
+      <Filter>Resource Files\MessagerTexture</Filter>
+    </Font>
+    <Font Include="Resources\Arial.ttf">
+      <Filter>Resource Files\MessagerTexture</Filter>
+    </Font>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Source\Contacts.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Main.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Object.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\TextBox.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="openal32.dll">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="sfml-audio-2.dll">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="sfml-audio-d-2.dll">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="sfml-graphics-2.dll">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="sfml-graphics-d-2.dll">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="sfml-network-2.dll">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="sfml-network-d-2.dll">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="sfml-system-2.dll">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="sfml-system-d-2.dll">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="sfml-window-2.dll">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="sfml-window-d-2.dll">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="p_minimal.dll">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="p_test.dll">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="padlock.dll">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="ossltest.dll">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="legacy.dll">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="libcrypto-3-x64.dll">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="libssl-3-x64.dll">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="loader_attic.dll">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="capi.dll">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="dasync.dll">
-      <Filter>Resource Files</Filter>
-    </None>
+    <ClCompile Include="Source\Contacts.cpp">
+      <Filter>Source Files\Logic</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ProccessEvents.cpp">
+      <Filter>Source Files\Logic</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Render.cpp">
+      <Filter>Source Files\Logic</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Update.cpp">
+      <Filter>Source Files\Logic</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Object.cpp">
+      <Filter>Source Files\Logic</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\decode.cpp">
+      <Filter>Source Files\Communication\Decryption</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\encode.cpp">
+      <Filter>Source Files\Communication\Encryption</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Source\MessageCache.txt">
+      <Filter>Source Files\Communication</Filter>
+    </Text>
+    <Text Include="Source\receiving.txt">
+      <Filter>Source Files\Communication\Decryption</Filter>
+    </Text>
+    <Text Include="Source\Contacts.txt">
+      <Filter>Source Files\Communication</Filter>
+    </Text>
+    <Text Include="Source\sending.txt">
+      <Filter>Source Files\Communication\Encryption</Filter>
+    </Text>
   </ItemGroup>
 </Project>

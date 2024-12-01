@@ -1,6 +1,10 @@
 #ifndef MAIN_H
 #define MAIN_H
 
+#include "object.h"
+#include "contacts.h"
+#include "TextBox.h"
+
 #include <iostream>
 #include <SFML/Graphics.hpp>
 #include <openssl/rsa.h>
@@ -21,12 +25,19 @@ private:
 
 public:
     SFMLApp();
+    ~SFMLApp();
     void run();
 
 private:
     void processEvents();
     void update();
     void render();
+    sf::Font font;
 };
+
+extern bool isToggled;
+extern Contact clientContact;
+extern std::vector<Contact> contacts;
+extern TextBox textBox;
 
 #endif

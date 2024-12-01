@@ -1,0 +1,20 @@
+Alice,Software Developer,1234567890,alice@example.com,Offline
+Bob,Data Scientist,9876543210,bob@example.com,Offline
+Charlie,Graphic Designer,1112223333,charlie@example.com,Offline
+Diana,Marketing Specialist,4445556666,diana@example.com,Offline
+Eve,Network Engineer,7778889999,eve@example.com,Offline
+Frank,System Administrator,3334445555,frank@example.com,Offline
+Grace,Machine Learning Engineer,6667778888,grace@example.com,Offline
+Hank,Database Administrator,2223334444,hank@example.com,Offline
+Ivy,Product Manager,5556667777,ivy@example.com,Offline
+Jack,Mobile App Developer,9990001111,jack@example.com,Offline
+Karen,Web Developer,8889990000,karen@example.com,Offline
+Leo,Blockchain Developer,7770001111,leo@example.com,Offline
+Mia,Game Developer,6665554444,mia@example.com,Offline
+Nina,Cybersecurity Analyst,5554443333,nina@example.com,Offline
+Oscar,DevOps Engineer,4443332222,oscar@example.com,Offline
+Paul,AI Researcher,3332221111,paul@example.com,Offline
+Quincy,Robotics Engineer,2221110000,quincy@example.com,Offline
+Rita,Technical Writer,1110009999,rita@example.com,Offline
+Steve,Cloud Architect,0009998888,steve@example.com,Offline
+Tina,Front-End Developer,9998887777,tina@example.com,Offline

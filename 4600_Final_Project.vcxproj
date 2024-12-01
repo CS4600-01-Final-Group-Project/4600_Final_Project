@@ -133,18 +133,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="decode.cpp" />
-    <ClCompile Include="encode.cpp" />
-    <ClCompile Include="Main.cpp" />
-    <ClCompile Include="Networking.cpp" />
-    <ClCompile Include="ProccessEvents.cpp" />
-    <ClCompile Include="Render.cpp" />
-    <ClCompile Include="Update.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Main.h" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="capi.dll" />
     <None Include="dasync.dll" />
     <None Include="legacy.dll" />
@@ -166,6 +154,37 @@
     <None Include="sfml-system-d-2.dll" />
     <None Include="sfml-window-2.dll" />
     <None Include="sfml-window-d-2.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Resources\Selectionbar.png" />
+    <Image Include="Resources\Slidingbar.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="Resources\Arial.ttf" />
+    <Font Include="Resources\KGHAPPY.ttf" />
+    <Font Include="Resources\Pacifico.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Source\Contacts.h" />
+    <ClInclude Include="Source\Main.h" />
+    <ClInclude Include="Source\Object.h" />
+    <ClInclude Include="Source\TextBox.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Source\Contacts.cpp" />
+    <ClCompile Include="Source\decode.cpp" />
+    <ClCompile Include="Source\encode.cpp" />
+    <ClCompile Include="Source\Main.cpp" />
+    <ClCompile Include="Source\Object.cpp" />
+    <ClCompile Include="Source\ProccessEvents.cpp" />
+    <ClCompile Include="Source\Render.cpp" />
+    <ClCompile Include="Source\Update.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Source\Contacts.txt" />
+    <Text Include="Source\MessageCache.txt" />
+    <Text Include="Source\receiving.txt" />
+    <Text Include="Source\sending.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
