@@ -18,6 +18,10 @@
 #include <fstream>
 #include <cstring>
 
+
+std::string encode(const std::string& input);
+std::string decode(const std::string& input);
+
 class SFMLApp
 {
 private:
@@ -36,8 +40,12 @@ private:
 };
 
 extern bool isToggled;
+extern bool isToggled2;
+extern bool contactSelected;
 extern Contact clientContact;
+extern Contact* otherContact;
 extern std::vector<Contact> contacts;
 extern TextBox textBox;
+
 
 #endif

@@ -31,6 +31,9 @@
     <Filter Include="Source Files\Communication\Encryption">
       <UniqueIdentifier>{7b33bd33-65c0-4192-b180-df3a960225f0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Communication\TextFiles">
+      <UniqueIdentifier>{1d207ca9-35ab-48ec-b517-1ce18142f032}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="capi.dll">
@@ -104,6 +107,18 @@
     <Image Include="Resources\Slidingbar.png">
       <Filter>Resource Files\MessagerTexture</Filter>
     </Image>
+    <Image Include="Resources\Blueicon.png">
+      <Filter>Resource Files\MessagerTexture</Filter>
+    </Image>
+    <Image Include="Resources\Redicon.png">
+      <Filter>Resource Files\MessagerTexture</Filter>
+    </Image>
+    <Image Include="Resources\Exit.png">
+      <Filter>Resource Files\MessagerTexture</Filter>
+    </Image>
+    <Image Include="Resources\MessageBox.png">
+      <Filter>Resource Files\MessagerTexture</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <Font Include="Resources\Pacifico.ttf">
@@ -157,17 +172,14 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="Source\MessageCache.txt">
-      <Filter>Source Files\Communication</Filter>
-    </Text>
-    <Text Include="Source\receiving.txt">
-      <Filter>Source Files\Communication\Decryption</Filter>
+    <Text Include="Source\sending.txt">
+      <Filter>Source Files\Communication\TextFiles</Filter>
     </Text>
     <Text Include="Source\Contacts.txt">
-      <Filter>Source Files\Communication</Filter>
+      <Filter>Source Files\Communication\TextFiles</Filter>
     </Text>
-    <Text Include="Source\sending.txt">
-      <Filter>Source Files\Communication\Encryption</Filter>
+    <Text Include="Source\MessageCache.txt">
+      <Filter>Source Files\Communication\TextFiles</Filter>
     </Text>
   </ItemGroup>
 </Project>

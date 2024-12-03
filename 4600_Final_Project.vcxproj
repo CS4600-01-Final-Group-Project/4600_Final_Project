@@ -156,6 +156,10 @@
     <None Include="sfml-window-d-2.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="Resources\Blueicon.png" />
+    <Image Include="Resources\Exit.png" />
+    <Image Include="Resources\MessageBox.png" />
+    <Image Include="Resources\Redicon.png" />
     <Image Include="Resources\Selectionbar.png" />
     <Image Include="Resources\Slidingbar.png" />
   </ItemGroup>
@@ -183,7 +187,6 @@
   <ItemGroup>
     <Text Include="Source\Contacts.txt" />
     <Text Include="Source\MessageCache.txt" />
-    <Text Include="Source\receiving.txt" />
     <Text Include="Source\sending.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

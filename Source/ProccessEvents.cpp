@@ -1,6 +1,7 @@
 #include "Main.h"
 
 bool isToggled = false;
+bool isToggled2 = false;
 sf::Clock clock2;
 
 void SFMLApp::processEvents()
@@ -11,15 +12,28 @@ void SFMLApp::processEvents()
         if (event.type == sf::Event::Closed)
             window.close();
 
-        textBox.handleInput(event);
+        textBox.handleInput(event, clientContact);
 
         float deltaTime = clock2.restart().asSeconds();
         textBox.updateCursor(deltaTime);
+        sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+
+        if (mousePos.x >= 11 && mousePos.x <= 342 && mousePos.y >= 99 && mousePos.y <= 203)
+        {
+
+            isToggled2 = true;
+
+            if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left)
+            {
+                contactSelected = true;
+            }
+        }
+        else { isToggled2 = false; }
 
         if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left)
         {
 
-            sf::Vector2i mousePos = sf::Mouse::getPosition(window);         
+                
             
             //std::cout << "X: " << mousePos.x << " Y: " << mousePos.y << std::endl;
             

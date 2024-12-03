@@ -14,6 +14,30 @@ std::string Contact::getState() const
     return state;
 }
 
+Contact* Contact::findContactByName(std::vector<Contact>& contacts, const std::string& name)
+{
+    for (auto& contact : contacts)
+    {
+        if (contact.getName() == name)
+        {
+            return &contact; // Return the address of the contact
+        }
+    }
+    return nullptr; // Return nullptr if not found
+}
+
+std::string Contact::getOnlineContact(const std::vector<Contact>& contacts, const std::string& specificName)
+{
+    for (const auto& contact : contacts)
+    {
+        if (contact.getName() != specificName)
+        {
+            return contact.getName();  // Return the other contact's name
+        }
+    }
+
+    return "";  // Return an empty string if no match is found
+}
 // Setters
 void Contact::setState(const std::string& newState)
 {

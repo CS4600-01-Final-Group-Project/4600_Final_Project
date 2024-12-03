@@ -25,6 +25,8 @@ public:
     std::string getNumber() const;
     std::string getEmail() const;
     std::string getState() const;
+    static Contact* findContactByName(std::vector<Contact>& contacts, const std::string& name);
+    static std::string getOnlineContact(const std::vector<Contact>& contacts, const std::string& specificName);
 
     // Setters
     void setState(const std::string& newState);

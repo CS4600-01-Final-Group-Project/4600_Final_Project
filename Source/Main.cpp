@@ -2,7 +2,11 @@
 
 std::vector<Contact> contacts;
 Contact clientContact;
+Contact* otherContact;
+std::string onlineContact;
 TextBox textBox(363, 910, 595, 50);
+
+bool  contactSelected = false;
 
 int main()
 {
@@ -17,6 +21,12 @@ int main()
     Contact::saveContacts(contacts, "Source/Contacts.txt");
     clientContact.setState("Client");
 
+    onlineContact = Contact::getOnlineContact(contacts, clientContact.getName());
+
+    otherContact = Contact::findContactByName(contacts, onlineContact);
+
+    std::cout << otherContact->getName();
+    
     // Once the "User" is selected the program may begin.
 
     SFMLApp app;

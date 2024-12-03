@@ -2,6 +2,7 @@
 #include <SFML/Window.hpp>
 #include <iostream>
 #include <string>
+#include <fstream>
 
 class TextBox {
 public:
@@ -30,7 +31,7 @@ public:
     }
 
     // Function to update the text box with user input
-    void handleInput(const sf::Event& event) {
+    void handleInput(const sf::Event& event, const Contact& clientContact) {
         if (event.type == sf::Event::TextEntered) {
             if (event.text.unicode == 8) {  // Backspace key
                 if (!inputText.isEmpty()) {
@@ -42,8 +43,29 @@ public:
                 // Once Enter is pressed, clear the inputText to show the ghost text again
                 // (Only if you want to clear the text box upon pressing Enter)
                 outputText = inputText;  // Store the entered text in the output variable
-                std::cout << "entered text: " << outputText << std::endl;
-                inputText.clear();  // Clear the input text
+                inputText.clear();  // Clear the input text              
+
+                
+                // Encrypt
+                std::string encodedText = encode(outputText);
+
+                //Sending file gets cleared after each message
+                std::ofstream outFile("Source/sending.txt", std::ios::app);  // Open in append mode
+                if (outFile.is_open()) {
+
+                    outFile << clientContact.getName() << ": " << encodedText << std::endl;  // Write to file
+                    outFile.close();  // Close the file after writing
+                }
+
+                // Add Cache so we can see previous messages
+
+                std::ofstream outFile("Source/MessageCache.txt", std::ios::app);  // Open in append mode
+                if (outFile.is_open()) {
+
+                    outFile << clientContact.getName() << ": " << encodedText << std::endl;  // Write to file
+                    outFile.close();  // Close the file after writing
+                }
+
             }
             else if (event.text.unicode < 128) {  // Only accept ASCII characters
                 inputText += event.text.unicode;
