@@ -4,6 +4,9 @@
 #include <string>
 #include <fstream>
 
+std::string encode(const std::string& input);
+std::string decode(const std::string& input);
+
 class TextBox {
 public:
     TextBox(float x, float y, unsigned int width, unsigned int height, unsigned int charSize = 30)
@@ -57,13 +60,13 @@ public:
                     outFile.close();  // Close the file after writing
                 }
 
-                // Add Cache so we can see previous messages
+                // Add Decrypted to Cache so we can see previous messages
 
-                std::ofstream outFile("Source/MessageCache.txt", std::ios::app);  // Open in append mode
-                if (outFile.is_open()) {
+                std::ofstream outFile2("Source/MessageCache.txt", std::ios::app);  // Open in append mode
+                if (outFile2.is_open()) {
 
-                    outFile << clientContact.getName() << ": " << encodedText << std::endl;  // Write to file
-                    outFile.close();  // Close the file after writing
+                    outFile2 << clientContact.getName() << ": " << encodedText << std::endl;  // Write to file
+                    outFile2.close();  // Close the file after writing
                 }
 
             }

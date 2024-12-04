@@ -17,10 +17,7 @@
 #include <vector>
 #include <fstream>
 #include <cstring>
-
-
-std::string encode(const std::string& input);
-std::string decode(const std::string& input);
+#include <string>
 
 class SFMLApp
 {
