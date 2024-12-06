@@ -4,8 +4,8 @@
 #include <string>
 #include <fstream>
 
-std::string encode(const std::string& input);
-std::string decode(const std::string& input);
+std::string encode();
+std::string decode(std::string decodedText);
 
 class TextBox {
 public:
@@ -48,24 +48,23 @@ public:
                 outputText = inputText;  // Store the entered text in the output variable
                 inputText.clear();  // Clear the input text              
 
-                
-                // Encrypt
-                std::string encodedText = encode(outputText);
 
                 //Sending file gets cleared after each message
-                std::ofstream outFile("Source/sending.txt", std::ios::app);  // Open in append mode
+                std::ofstream outFile("Source/sending.txt", std::ios::trunc);  // Open in truncation mode to clear the file
                 if (outFile.is_open()) {
 
-                    outFile << clientContact.getName() << ": " << encodedText << std::endl;  // Write to file
+                    outFile << outputText << std::endl;  // Write to file
                     outFile.close();  // Close the file after writing
                 }
 
-                // Add Decrypted to Cache so we can see previous messages
+                // Encrypt
+                std::string encodedText = encode();
 
+                // Add Decrypted to Cache so we can see previous messages
                 std::ofstream outFile2("Source/MessageCache.txt", std::ios::app);  // Open in append mode
                 if (outFile2.is_open()) {
 
-                    outFile2 << clientContact.getName() << ": " << encodedText << std::endl;  // Write to file
+                    outFile2 << clientContact.getName() << ": " << decode(encodedText) << std::endl;  // Write to file
                     outFile2.close();  // Close the file after writing
                 }
 

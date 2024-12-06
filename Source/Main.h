@@ -44,5 +44,7 @@ extern Contact* otherContact;
 extern std::vector<Contact> contacts;
 extern TextBox textBox;
 
+std::string getMessage();
+void cleanCache();
 
 #endif

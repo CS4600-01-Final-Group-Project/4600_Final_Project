@@ -1,7 +1,7 @@
 #include "main.h"
 
-std::string decode(const std::string& input)
+std::string decode(std::string decodedText)
 {
 
-	return input;
+	return decodedText;
 }

@@ -25,10 +25,8 @@ int main()
 
     otherContact = Contact::findContactByName(contacts, onlineContact);
 
-    std::cout << otherContact->getName();
-    
     // Once the "User" is selected the program may begin.
-
+    cleanCache();
     SFMLApp app;
     app.run();
     return 0;
@@ -75,6 +73,24 @@ SFMLApp::~SFMLApp()
 
     // Save the updated list of contacts back to the file
     Contact::saveContacts(contacts, "Source/Contacts.txt");
-
+    cleanCache();
     std::cout << "Client contact " << clientContact.getName() << " set to Offline." << std::endl;
+
+}
+
+void cleanCache()
+{
+    // Erase the contents of the file by opening it in truncation mode
+    std::ofstream outFile2("Source/MessageCache.txt", std::ios::trunc);
+    if (outFile2.is_open())
+    {
+        // File is successfully cleared
+        std::cout << "MessageCache.txt has been cleared.\n";
+        outFile2.close();
+    }
+    else
+    {
+        // Handle the error if the file could not be opened
+        std::cerr << "Error: Unable to open MessageCache.txt for clearing.\n";
+    }
 }
