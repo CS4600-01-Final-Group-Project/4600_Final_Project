@@ -1,2 +1,2 @@
 Alice,Software Developer,1234567890,alice@example.com,Online
-Bob,Data Scientist,9876543210,bob@example.com,Offline
+Bob,Data Scientist,9876543210,bob@example.com,Online
