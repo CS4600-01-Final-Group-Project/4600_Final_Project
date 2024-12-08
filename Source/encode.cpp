@@ -11,11 +11,15 @@ std::string encode()
     unsigned char key[32]; //, IV[16];
     EVP_CIPHER_CTX* encryption_ctx = EVP_CIPHER_CTX_new();
 
-    // Assign random values to our key and IV
+    // Assign random values to our key
     RAND_bytes(key, 32);
-    // RAND_bytes(IV, 16); - might be fine to do just ECB 
+    std::cout << "Known key from encode: ";
+    for (unsigned char byte : key) {
+        std::cout << std::hex << static_cast<int>(byte) << " ";
+    }
+    std::cout << std::endl;
 
-    // Initialize the AES-256-CBC cipher
+    // Initialize the AES-256-ECB cipher
     EVP_EncryptInit_ex(encryption_ctx, EVP_aes_256_ecb(), NULL, key, NULL);
 
     int input_len = messageToEncode.length();
@@ -25,6 +29,7 @@ std::string encode()
 
     // Encrypt Update
     if (EVP_EncryptUpdate(encryption_ctx, ciphertext, &out_len, messageAsUnsignedChar, input_len) != 1) {
+        std::cerr << "EVP_EncryptUpdate failed" << std::endl;
         delete[] ciphertext;
         EVP_CIPHER_CTX_free(encryption_ctx);
         return "";
@@ -33,19 +38,19 @@ std::string encode()
 
     // Encrypt Final
     if (EVP_EncryptFinal_ex(encryption_ctx, ciphertext + encrypted_len, &out_len) != 1) {
+        std::cerr << "EVP_EncryptFinal_ex failed" << std::endl;
         delete[] ciphertext;
         EVP_CIPHER_CTX_free(encryption_ctx);
         return "";
     }
-
     encrypted_len += out_len;
 
     // base64 encode the ciphertext
-    std::vector<unsigned char> encodedCiphertext((4 * (encrypted_len + 2)));
+    std::vector<unsigned char> encodedCiphertext((4 * encrypted_len / 3 + 4));
     int encoded_len = EVP_EncodeBlock(encodedCiphertext.data(), ciphertext, encrypted_len);
 
     // base64 encode the key
-    std::vector<unsigned char> encodedKey((4 * (32 + 2)));
+    std::vector<unsigned char> encodedKey((4 * 32 / 3 + 4));
     int encoded_key_len = EVP_EncodeBlock(encodedKey.data(), key, 32);
 
     // Clean up resources
