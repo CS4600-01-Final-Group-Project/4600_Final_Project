@@ -4,8 +4,8 @@
 #include <string>
 #include <fstream>
 
-std::string encode();
-std::string decode(std::string decodedText);
+std::string encode(const Contact& clientContact);
+std::string decode(std::string decodedText, const Contact& clientContact);
 
 class TextBox {
 public:
@@ -58,13 +58,13 @@ public:
                 }
 
                 // Encrypt
-                std::string encodedText = encode();
+                std::string encodedText = encode(clientContact);
 
                 // Add Decrypted to Cache so we can see previous messages
                 std::ofstream outFile2("Source/MessageCache.txt", std::ios::app);  // Open in append mode
                 if (outFile2.is_open()) {
 
-                    outFile2 << clientContact.getName() << ": " << decode(encodedText) << std::endl;  // Write to file
+                    outFile2 << clientContact.getName() << ": " << decode(encodedText, clientContact) << std::endl;  // Write to file
                     outFile2.close();  // Close the file after writing
                 }
 

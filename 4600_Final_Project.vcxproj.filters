@@ -34,6 +34,9 @@
     <Filter Include="Source Files\Communication\TextFiles">
       <UniqueIdentifier>{1d207ca9-35ab-48ec-b517-1ce18142f032}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Communication\Keys">
+      <UniqueIdentifier>{86aaf11c-53ca-41ab-b50e-df1adcdffd04}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="capi.dll">
@@ -98,6 +101,18 @@
     </None>
     <None Include="sfml-window-d-2.dll">
       <Filter>Resource Files\Dependencies</Filter>
+    </None>
+    <None Include="AliceKey.pem">
+      <Filter>Source Files\Communication\Keys</Filter>
+    </None>
+    <None Include="BobKey.pem">
+      <Filter>Source Files\Communication\Keys</Filter>
+    </None>
+    <None Include="AliceKeyPublic.pem">
+      <Filter>Source Files\Communication\Keys</Filter>
+    </None>
+    <None Include="BobKeyPublic.pem">
+      <Filter>Source Files\Communication\Keys</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

@@ -10,7 +10,6 @@ bool  contactSelected = false;
 
 int main()
 {
-
     // Loads in example Contact information from a File, Randomly selects an non online
     // contact and marks it as online in the file and as a client in the running program.
     // The Contacts.txt is visible to both instances of the program for simplicity.

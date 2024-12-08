@@ -5,7 +5,7 @@
 
 std::vector<unsigned char> base64Decode(const std::string& base64EncodedString);
 
-std::string decode(std::string encryptedMessage)
+std::string decode(std::string encryptedMessage, const Contact& clientContact)
 {
     int firstColon = encryptedMessage.find("|");
     int secondColon = encryptedMessage.find("|", firstColon + 1);

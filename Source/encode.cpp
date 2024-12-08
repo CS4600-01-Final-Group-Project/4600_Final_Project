@@ -1,8 +1,10 @@
 #include "main.h"
+#include <openssl/bio.h>
 
-std::string encode()
+bool EncryptString(const std::string& InStr, const std::string& InPublicKey, std::string& OutString);
+
+std::string encode(const Contact& clientContact)
 {
-
     std::string messageToEncode = getMessage();
 
     const unsigned char* messageAsUnsignedChar = reinterpret_cast<const unsigned char*>(messageToEncode.c_str());
@@ -45,6 +47,19 @@ std::string encode()
     }
     encrypted_len += out_len;
 
+    std::string recipientPublicKeyPath = clientContact.getOnlineContact(contacts, clientContact.getName()) + "KeyPublic.pem";
+    std::cout << "Trying to read key from file: " << recipientPublicKeyPath << std::endl;
+
+    std::string encryptedString = "";
+    bool test = EncryptString("This is a test encryption", recipientPublicKeyPath, encryptedString);
+
+    if (test) {
+        std::cout << "Encrypted String test success: " << encryptedString << std::endl;
+    }
+    else {
+        std::cout << "Encrypted String test failed" << std::endl;
+    }
+
     // base64 encode the ciphertext
     std::vector<unsigned char> encodedCiphertext((4 * encrypted_len / 3 + 4));
     int encoded_len = EVP_EncodeBlock(encodedCiphertext.data(), ciphertext, encrypted_len);
@@ -60,7 +75,7 @@ std::string encode()
     std::string encodedCiphertextString(reinterpret_cast<char*>(encodedCiphertext.data()), encoded_len);
     std::string keyAsString(reinterpret_cast<char*>(encodedKey.data()), encoded_key_len);
 
-    return  encodedCiphertextString + "|" + keyAsString;
+    return encodedCiphertextString + "|" + keyAsString;
 }
 
 
@@ -86,4 +101,91 @@ std::string getMessage()
     inputFile.close();
 
     return message;
+}
+
+bool EncryptString(const std::string& InStr /*plaintext*/, const std::string& InPublicKey /*path to public key pem file*/, std::string& OutString /*ciphertext*/) {
+    // Load key using BIO
+    BIO* bio = BIO_new_file(InPublicKey.c_str(), "r");
+    if (!bio) {
+        // Handle error if file couldn't be opened
+        std::cerr << "Failed to open public key file." << std::endl;
+        return false;
+    }
+
+    std::cout << "check 0" << std::endl;
+
+    EVP_PKEY* pkey = PEM_read_bio_PUBKEY(bio, NULL, NULL, NULL);
+    BIO_free(bio); // Release the BIO object after reading the key
+
+    std::cout << "check 100" << std::endl;
+
+    if (!pkey) {
+        // Handle error if the key couldn't be read
+        std::cerr << "Failed to read public key from file." << std::endl;
+        return false;
+    }
+
+    std::cout << "check 1" << std::endl;
+
+    // Create/initialize context
+    EVP_PKEY_CTX* ctx = EVP_PKEY_CTX_new(pkey, NULL);
+    if (!ctx) {
+        EVP_PKEY_free(pkey);
+        std::cerr << "Failed to create encryption context." << std::endl;
+        return false; // Handle context creation failure
+    }
+
+    std::cout << "check 2" << std::endl;
+
+    if (EVP_PKEY_encrypt_init(ctx) <= 0) {
+        EVP_PKEY_free(pkey);
+        EVP_PKEY_CTX_free(ctx);
+        std::cerr << "Failed to initialize encryption." << std::endl;
+        return false; // Handle encryption initialization failure
+    }
+
+    std::cout << "check 3" << std::endl;
+
+    // Specify padding: default is PKCS#1 v1.5
+    // EVP_PKEY_CTX_set_rsa_padding(ctx, RSA_PKCS1_OAEP_PADDING); // for OAEP with SHA1 for both digests
+
+    // Encryption
+    size_t ciphertextLen = 0;
+    if (EVP_PKEY_encrypt(ctx, NULL, &ciphertextLen, (const unsigned char*)InStr.c_str(), InStr.size()) <= 0) {
+        EVP_PKEY_free(pkey);
+        EVP_PKEY_CTX_free(ctx);
+        std::cerr << "Failed to determine ciphertext size." << std::endl;
+        return false; // Handle encryption size query failure
+    }
+
+    std::cout << "check 4" << std::endl;
+
+    unsigned char* ciphertext = (unsigned char*)OPENSSL_malloc(ciphertextLen);
+    if (!ciphertext) {
+        EVP_PKEY_free(pkey);
+        EVP_PKEY_CTX_free(ctx);
+        std::cerr << "Failed to allocate memory for ciphertext." << std::endl;
+        return false; // Handle allocation failure
+    }
+
+    std::cout << "check 5" << std::endl;
+
+    if (EVP_PKEY_encrypt(ctx, ciphertext, &ciphertextLen, (const unsigned char*)InStr.c_str(), InStr.size()) <= 0) {
+        EVP_PKEY_free(pkey);
+        EVP_PKEY_CTX_free(ctx);
+        OPENSSL_free(ciphertext);
+        std::cerr << "Encryption failed." << std::endl;
+        return false; // Handle encryption failure
+    }
+
+    std::cout << "check 6" << std::endl;
+
+    OutString.assign((char*)ciphertext, ciphertextLen);
+
+    // Release memory
+    EVP_PKEY_free(pkey);
+    EVP_PKEY_CTX_free(ctx);
+    OPENSSL_free(ciphertext);
+
+    return true; // Encryption successful
 }
