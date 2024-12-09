@@ -24,11 +24,20 @@ bool DecryptData(const unsigned char* InData, size_t InDataLen, const std::strin
 
 std::string decode(std::string encryptedMessage, const Contact& clientContact)
 {
+    std::cout << "received message to decode: " << encryptedMessage << std::endl;
+
     int firstColon = encryptedMessage.find("|");
     int secondColon = encryptedMessage.find("|", firstColon + 1);
 
     std::string encodedMessage = encryptedMessage.substr(0, firstColon);
     std::string base64EncodedKey = encryptedMessage.substr(firstColon + 1, secondColon);
+
+    std::cout << std::endl;
+    std::cout << "encoded Key from decode: " << base64EncodedKey << std::endl;
+
+    std::cout << std::endl;
+
+    std::cout << "encoded message from decode: " << encodedMessage << std::endl;
 
     // Decode the key and message
     std::string decodedKey = base64_decode(base64EncodedKey);
@@ -47,13 +56,16 @@ std::string decode(std::string encryptedMessage, const Contact& clientContact)
     const unsigned char* decodedMessageAsCharArray = reinterpret_cast<const unsigned char*>(decodedMessage.c_str());
     const unsigned char* decodedFromBase64Key = reinterpret_cast<const unsigned char*>(decodedKey.c_str());
 
+
     // get path of private key // clientContact.getOnlineContact(contacts, clientContact.getName())
-    std::string recipientPrivateKey = clientContact.getOnlineContact(contacts, clientContact.getName()) + "Key.pem";
+    std::string recipientPrivateKey = clientContact.getName() + "Key.pem";
     std::cout << "Trying to read clients private key from: " << recipientPrivateKey << std::endl;
 
     unsigned char* decryptedKey = nullptr;
     size_t decryptedKeyLength = 0;
     bool test = DecryptData(decodedFromBase64Key, decodedKey.size(), recipientPrivateKey, decryptedKey, decryptedKeyLength);
+
+    std::cout << "Key length = " << decryptedKeyLength << std::endl;
 
     if (test) {
         std::cout << "Decrypted Key test success: " << std::endl;
@@ -90,11 +102,6 @@ std::string decode(std::string encryptedMessage, const Contact& clientContact)
     }
     decrypted_len += out_len;
 
-    std::cout << "decodedMessageAsCharArray from decode: " << std::endl;
-    for (size_t i = 0; i < 32; ++i) {
-        std::cout << std::hex << static_cast<int>(decodedMessageAsCharArray[i]) << " ";
-    }
-
     // Decrypt Final
     
     if (EVP_DecryptFinal_ex(decryption_ctx, plaintext + decrypted_len, &out_len) != 1) {
@@ -103,8 +110,6 @@ std::string decode(std::string encryptedMessage, const Contact& clientContact)
         return "";
     }
     decrypted_len += out_len;
-
-    
 
     // Convert to std::string and ensure null-termination
     std::string plaintextAsString(reinterpret_cast<char*>(plaintext), decrypted_len);

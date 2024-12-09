@@ -2,6 +2,7 @@
 #include <openssl/bio.h>
 
 bool EncryptData(const unsigned char* InData, size_t InDataLen, const std::string& InPublicKey, unsigned char*& OutData, size_t& OutDataLen);
+std::string base64_encode(unsigned char const* bytes_to_encode, unsigned int in_len);
 
 std::string encode(const Contact& clientContact)
 {
@@ -55,6 +56,11 @@ std::string encode(const Contact& clientContact)
     size_t encryptedKeyLength = 0;
     bool test = EncryptData(key, 32, recipientPublicKeyPath, encryptedKey, encryptedKeyLength);
 
+
+
+    std::string decodedString(reinterpret_cast<const char*>(ciphertext), encrypted_len);
+    std::cout << "Decoded string from encode: " << decodedString << std::endl;
+
     if (test) {
         std::cout << "Encrypted Key test success: " << std::string(reinterpret_cast<char*>(encryptedKey), encryptedKeyLength) << std::endl;
     }
@@ -62,20 +68,13 @@ std::string encode(const Contact& clientContact)
         std::cout << "Encrypted Key test failed" << std::endl;
     }
 
-    // base64 encode the ciphertext
-    std::vector<unsigned char> encodedCiphertext((4 * encrypted_len / 3 + 4));
-    int encoded_len = EVP_EncodeBlock(encodedCiphertext.data(), ciphertext, encrypted_len);
-
-    // base64 encode the key
-    std::vector<unsigned char> encodedKey((4 * encryptedKeyLength / 3 + 4));
-    int encoded_key_len = EVP_EncodeBlock(encodedKey.data(), encryptedKey, encryptedKeyLength);
+    std::string encodedCiphertextString = base64_encode(ciphertext, encrypted_len);
+    std::string keyAsString = base64_encode(encryptedKey, encryptedKeyLength);
 
     // Clean up resources
     delete[] ciphertext;
     EVP_CIPHER_CTX_free(encryption_ctx);
 
-    std::string encodedCiphertextString(reinterpret_cast<char*>(encodedCiphertext.data()), encoded_len);
-    std::string keyAsString(reinterpret_cast<char*>(encodedKey.data()), encoded_key_len);
 
     return encodedCiphertextString + "|" + keyAsString;
 }
@@ -169,4 +168,57 @@ bool EncryptData(const unsigned char* InData, size_t InDataLen, const std::strin
     EVP_PKEY_CTX_free(ctx);
 
     return true; // Encryption successful
+}
+
+static const std::string base64_chars =
+"ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+"abcdefghijklmnopqrstuvwxyz"
+"0123456789+/";
+
+
+static inline bool is_base64(unsigned char c) {
+    return (isalnum(c) || (c == '+') || (c == '/'));
+}
+
+std::string base64_encode(unsigned char const* bytes_to_encode, unsigned int in_len) {
+    std::string ret;
+    int i = 0;
+    int j = 0;
+    unsigned char char_array_3[3];
+    unsigned char char_array_4[4];
+
+    while (in_len--) {
+        char_array_3[i++] = *(bytes_to_encode++);
+        if (i == 3) {
+            char_array_4[0] = (char_array_3[0] & 0xfc) >> 2;
+            char_array_4[1] = ((char_array_3[0] & 0x03) << 4) + ((char_array_3[1] & 0xf0) >> 4);
+            char_array_4[2] = ((char_array_3[1] & 0x0f) << 2) + ((char_array_3[2] & 0xc0) >> 6);
+            char_array_4[3] = char_array_3[2] & 0x3f;
+
+            for (i = 0; (i < 4); i++)
+                ret += base64_chars[char_array_4[i]];
+            i = 0;
+        }
+    }
+
+    if (i)
+    {
+        for (j = i; j < 3; j++)
+            char_array_3[j] = '\0';
+
+        char_array_4[0] = (char_array_3[0] & 0xfc) >> 2;
+        char_array_4[1] = ((char_array_3[0] & 0x03) << 4) + ((char_array_3[1] & 0xf0) >> 4);
+        char_array_4[2] = ((char_array_3[1] & 0x0f) << 2) + ((char_array_3[2] & 0xc0) >> 6);
+        char_array_4[3] = char_array_3[2] & 0x3f;
+
+        for (j = 0; (j < i + 1); j++)
+            ret += base64_chars[char_array_4[j]];
+
+        while ((i++ < 3))
+            ret += '=';
+
+    }
+
+    return ret;
+
 }

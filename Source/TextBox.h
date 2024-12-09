@@ -34,7 +34,7 @@ public:
     }
 
     // Function to update the text box with user input
-    void handleInput(const sf::Event& event, const Contact& clientContact) {
+    void handleInput(const sf::Event& event, const Contact& clientContact, std::vector<Contact> contacts) {
         if (event.type == sf::Event::TextEntered) {
             if (event.text.unicode == 8) {  // Backspace key
                 if (!inputText.isEmpty()) {
@@ -48,11 +48,8 @@ public:
                 outputText = inputText;  // Store the entered text in the output variable
                 inputText.clear();  // Clear the input text              
 
-
-                //Sending file gets cleared after each message
                 std::ofstream outFile("Source/sending.txt", std::ios::trunc);  // Open in truncation mode to clear the file
                 if (outFile.is_open()) {
-
                     outFile << outputText << std::endl;  // Write to file
                     outFile.close();  // Close the file after writing
                 }
@@ -60,14 +57,12 @@ public:
                 // Encrypt
                 std::string encodedText = encode(clientContact);
 
-                // Add Decrypted to Cache so we can see previous messages
-                std::ofstream outFile2("Source/MessageCache.txt", std::ios::app);  // Open in append mode
+                //Sending file gets cleared after each message
+                std::ofstream outFile2("Source/sending.txt", std::ios::trunc);  // Open in truncation mode to clear the file
                 if (outFile2.is_open()) {
-
-                    outFile2 << clientContact.getName() << ": " << decode(encodedText, clientContact) << std::endl;  // Write to file
+                    outFile2 << clientContact.getOnlineContact(contacts, clientContact.getName()) << ":" << encodedText << std::endl;  // Write to file
                     outFile2.close();  // Close the file after writing
                 }
-
             }
             else if (event.text.unicode < 128) {  // Only accept ASCII characters
                 inputText += event.text.unicode;
