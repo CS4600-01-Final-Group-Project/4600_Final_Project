@@ -47,7 +47,7 @@ std::string decode(std::string encryptedMessage, const Contact& clientContact)
     const unsigned char* decodedMessageAsCharArray = reinterpret_cast<const unsigned char*>(decodedMessage.c_str());
     const unsigned char* decodedFromBase64Key = reinterpret_cast<const unsigned char*>(decodedKey.c_str());
 
-    // get path of private key
+    // get path of private key // clientContact.getOnlineContact(contacts, clientContact.getName())
     std::string recipientPrivateKey = clientContact.getOnlineContact(contacts, clientContact.getName()) + "Key.pem";
     std::cout << "Trying to read clients private key from: " << recipientPrivateKey << std::endl;
 
@@ -58,9 +58,9 @@ std::string decode(std::string encryptedMessage, const Contact& clientContact)
     if (test) {
         std::cout << "Decrypted Key test success: " << std::endl;
         for (size_t i = 0; i < decryptedKeyLength; ++i) {
-            std::cout << std::hex << static_cast<int>(decryptedKey[i]) << " ";
-        }
-        std::cout << std::dec << std::endl;
+        std::cout << std::hex << static_cast<int>(decryptedKey[i]) << " ";
+    }
+    std::cout << std::dec << std::endl;
     }
     else {
         std::cout << "Decrypted Key test failed" << std::endl;
@@ -83,16 +83,20 @@ std::string decode(std::string encryptedMessage, const Contact& clientContact)
     int out_len = 0, decrypted_len = 0;
 
     // Decrypt Update
-    if (EVP_DecryptUpdate(decryption_ctx, plaintext, &out_len, decryptedKey, input_len) != 1) {
+    if (EVP_DecryptUpdate(decryption_ctx, plaintext, &out_len, decodedMessageAsCharArray, input_len) != 1) {
         std::cerr << "EVP_DecryptUpdate failed" << std::endl;
         EVP_CIPHER_CTX_free(decryption_ctx);
         return "";
     }
     decrypted_len += out_len;
 
-    // Decrypt Final
+    std::cout << "decodedMessageAsCharArray from decode: " << std::endl;
+    for (size_t i = 0; i < 32; ++i) {
+        std::cout << std::hex << static_cast<int>(decodedMessageAsCharArray[i]) << " ";
+    }
 
-    /*
+    // Decrypt Final
+    
     if (EVP_DecryptFinal_ex(decryption_ctx, plaintext + decrypted_len, &out_len) != 1) {
         std::cerr << "EVP_DecryptFinal_ex failed" << std::endl;
         EVP_CIPHER_CTX_free(decryption_ctx);
@@ -100,13 +104,15 @@ std::string decode(std::string encryptedMessage, const Contact& clientContact)
     }
     decrypted_len += out_len;
 
-    */
+    
 
     // Convert to std::string and ensure null-termination
     std::string plaintextAsString(reinterpret_cast<char*>(plaintext), decrypted_len);
 
     // Clean up
     EVP_CIPHER_CTX_free(decryption_ctx);
+
+    std::cout << "plaintext: " << plaintextAsString << std::endl;
 
     return plaintextAsString;
 }
