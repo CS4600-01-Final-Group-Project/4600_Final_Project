@@ -48,7 +48,7 @@ std::string encode(const Contact& clientContact)
     encrypted_len += out_len;
 
     std::string recipientPublicKeyPath = clientContact.getOnlineContact(contacts, clientContact.getName()) + "KeyPublic.pem";
-    std::cout << "Trying to read key from file: " << recipientPublicKeyPath << std::endl;
+    std::cout << "Trying to read recipient public key from file: " << recipientPublicKeyPath << std::endl;
 
     
     unsigned char* encryptedKey = nullptr;
@@ -114,20 +114,14 @@ bool EncryptData(const unsigned char* InData, size_t InDataLen, const std::strin
         return false;
     }
 
-    std::cout << "check 0" << std::endl;
-
     EVP_PKEY* pkey = PEM_read_bio_PUBKEY(bio, NULL, NULL, NULL);
     BIO_free(bio); // Release the BIO object after reading the key
-
-    std::cout << "check 100" << std::endl;
 
     if (!pkey) {
         // Handle error if the key couldn't be read
         std::cerr << "Failed to read public key from file." << std::endl;
         return false;
     }
-
-    std::cout << "check 1" << std::endl;
 
     // Create/initialize context
     EVP_PKEY_CTX* ctx = EVP_PKEY_CTX_new(pkey, NULL);
@@ -137,16 +131,12 @@ bool EncryptData(const unsigned char* InData, size_t InDataLen, const std::strin
         return false; // Handle context creation failure
     }
 
-    std::cout << "check 2" << std::endl;
-
     if (EVP_PKEY_encrypt_init(ctx) <= 0) {
         EVP_PKEY_free(pkey);
         EVP_PKEY_CTX_free(ctx);
         std::cerr << "Failed to initialize encryption." << std::endl;
         return false; // Handle encryption initialization failure
     }
-
-    std::cout << "check 3" << std::endl;
 
     // Encryption (calculate ciphertext length)
     if (EVP_PKEY_encrypt(ctx, NULL, &OutDataLen, InData, InDataLen) <= 0) {
@@ -155,8 +145,6 @@ bool EncryptData(const unsigned char* InData, size_t InDataLen, const std::strin
         std::cerr << "Failed to determine ciphertext size." << std::endl;
         return false; // Handle encryption size query failure
     }
-
-    std::cout << "check 4" << std::endl;
 
     // Allocate memory for ciphertext
     OutData = (unsigned char*)OPENSSL_malloc(OutDataLen);
@@ -167,8 +155,6 @@ bool EncryptData(const unsigned char* InData, size_t InDataLen, const std::strin
         return false; // Handle allocation failure
     }
 
-    std::cout << "check 5" << std::endl;
-
     // Perform encryption
     if (EVP_PKEY_encrypt(ctx, OutData, &OutDataLen, InData, InDataLen) <= 0) {
         EVP_PKEY_free(pkey);
@@ -177,8 +163,6 @@ bool EncryptData(const unsigned char* InData, size_t InDataLen, const std::strin
         std::cerr << "Encryption failed." << std::endl;
         return false; // Handle encryption failure
     }
-
-    std::cout << "check 6" << std::endl;
 
     // Release memory
     EVP_PKEY_free(pkey);
