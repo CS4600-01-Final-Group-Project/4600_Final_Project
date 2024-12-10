@@ -1,2 +1,1 @@
-Alice: Hi Bob
-Bob: Hi Alice
+Alice: Hey Bob, this is Alice

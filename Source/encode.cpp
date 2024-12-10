@@ -16,6 +16,8 @@ std::string encode(const Contact& clientContact)
 
     // Assign random values to our key
     RAND_bytes(key, 32);
+
+    // Print the key to the terminal for testing / presentation
     std::cout << "Known key from encode: ";
     for (unsigned char byte : key) {
         std::cout << std::hex << static_cast<int>(byte) << " ";
@@ -49,17 +51,28 @@ std::string encode(const Contact& clientContact)
     encrypted_len += out_len;
 
     std::string recipientPublicKeyPath = clientContact.getOnlineContact(contacts, clientContact.getName()) + "KeyPublic.pem";
-    std::cout << "Trying to read recipient public key from file: " << recipientPublicKeyPath << std::endl;
+    std::cout << " Reading recipient public key from file: " << recipientPublicKeyPath << std::endl;
 
     
     unsigned char* encryptedKey = nullptr;
     size_t encryptedKeyLength = 0;
     bool test = EncryptData(key, 32, recipientPublicKeyPath, encryptedKey, encryptedKeyLength);
 
+    // Generate HMAC using the same AES key
+    unsigned char mac[EVP_MAX_MD_SIZE];
+    unsigned int mac_len = 0;
+    HMAC(EVP_sha256(), key, 32, ciphertext, encrypted_len, mac, &mac_len);
 
+    // Print the HMAC
+
+    std::cout << "Generated MAC by sender: ";
+    for (unsigned char byte: mac) {
+        std::cout << std::hex << static_cast<int>(byte);
+    }
+    std::cout << std::endl;
 
     std::string decodedString(reinterpret_cast<const char*>(ciphertext), encrypted_len);
-    std::cout << "Decoded string from encode: " << decodedString << std::endl;
+    std::cout << "Encrypted string from encode method: " << decodedString << std::endl;
 
     if (test) {
         std::cout << "Encrypted Key test success: " << std::string(reinterpret_cast<char*>(encryptedKey), encryptedKeyLength) << std::endl;
@@ -70,13 +83,15 @@ std::string encode(const Contact& clientContact)
 
     std::string encodedCiphertextString = base64_encode(ciphertext, encrypted_len);
     std::string keyAsString = base64_encode(encryptedKey, encryptedKeyLength);
+    std::string encodedMac = base64_encode(mac, mac_len);
 
     // Clean up resources
     delete[] ciphertext;
     EVP_CIPHER_CTX_free(encryption_ctx);
 
+    std::cout << "encodedCiphertext|KeyAsString|encodedMac: " << encodedCiphertextString << "|" << keyAsString << "|" << encodedMac << std::endl;
 
-    return encodedCiphertextString + "|" + keyAsString;
+    return encodedCiphertextString + "|" + keyAsString + "|" + encodedMac;
 }
 
 

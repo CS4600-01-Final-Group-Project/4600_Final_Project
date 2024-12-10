@@ -31,26 +31,31 @@ std::string decode(std::string encryptedMessage, const Contact& clientContact)
 
     std::string encodedMessage = encryptedMessage.substr(0, firstColon);
     std::string base64EncodedKey = encryptedMessage.substr(firstColon + 1, secondColon);
+    std::string mac = encryptedMessage.substr(secondColon + 1);
+
+    std::cout << std::endl;
+    std::cout << "encoded message from decode: " << encodedMessage << std::endl;
 
     std::cout << std::endl;
     std::cout << "encoded Key from decode: " << base64EncodedKey << std::endl;
 
     std::cout << std::endl;
-
-    std::cout << "encoded message from decode: " << encodedMessage << std::endl;
+    std::cout << "encoded mac from decode: " << mac << std::endl;
 
     // Decode the key and message
     std::string decodedKey = base64_decode(base64EncodedKey);
     std::string decodedMessage = base64_decode(encodedMessage);
+    std::string decodedMac = base64_decode(encodedMessage);
 
     // Debug: Print decoded key and message in hex
     std::cout << std::endl;
-    std::cout << "Decoded Key from decode: " << decodedKey << std::endl;
- 
+    std::cout << "Decoded message from decode: " << decodedMessage << std::endl;
+
     std::cout << std::endl;
+    std::cout << "Decoded Key from decode: " << decodedKey << std::endl;
 
-    std::cout << "Decoded message from decode: " << decodedMessage << std:: endl;
-
+    std::cout << std::endl;
+    std::cout << "Decoded Mac from decode: " << decodedMac << std::endl;
     // Convert key and message into correct data type for cipher
 
     const unsigned char* decodedMessageAsCharArray = reinterpret_cast<const unsigned char*>(decodedMessage.c_str());
@@ -61,6 +66,8 @@ std::string decode(std::string encryptedMessage, const Contact& clientContact)
     std::string recipientPrivateKey = clientContact.getName() + "Key.pem";
     std::cout << "Trying to read clients private key from: " << recipientPrivateKey << std::endl;
 
+
+    // decrypt the AES key with private key
     unsigned char* decryptedKey = nullptr;
     size_t decryptedKeyLength = 0;
     bool test = DecryptData(decodedFromBase64Key, decodedKey.size(), recipientPrivateKey, decryptedKey, decryptedKeyLength);
@@ -77,9 +84,18 @@ std::string decode(std::string encryptedMessage, const Contact& clientContact)
     else {
         std::cout << "Decrypted Key test failed" << std::endl;
     }
-
-    // decrypt the AES key with private key
     
+    // Generate HMAC using the decrypted AES key
+    unsigned char generatedMacForCheck[EVP_MAX_MD_SIZE];
+    unsigned int mac_len = 0;
+    HMAC(EVP_sha256(), decryptedKey, 32, decodedMessageAsCharArray, decodedMessage.length(), generatedMacForCheck, &mac_len);
+
+    std::cout << "Generated MAC by receiver: ";
+    for (unsigned char byte : generatedMacForCheck) {
+        std::cout << std::hex << static_cast<int>(byte);
+    }
+    std::cout << std::endl;
+
     // Necessary AES decryption variables
     EVP_CIPHER_CTX* decryption_ctx = EVP_CIPHER_CTX_new();
 
@@ -87,6 +103,13 @@ std::string decode(std::string encryptedMessage, const Contact& clientContact)
         std::cerr << "EVP_DecryptInit_ex failed" << std::endl;
         EVP_CIPHER_CTX_free(decryption_ctx);
         return "";
+    }
+
+    if (memcmp(generatedMacForCheck, decodedMac.c_str(), mac_len) == 0) {
+        std::cout << "MAC verification succeeded!" << std::endl;
+    }
+    else {
+        std::cerr << "MAC verification failed!" << std::endl;
     }
 
     int input_len = decodedMessage.size();

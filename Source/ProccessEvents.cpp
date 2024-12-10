@@ -15,8 +15,6 @@ void SFMLApp::processEvents()
             if (file.is_open()) {
                 std::string line;
                 std::getline(file, line);
-
-                std::cout << "Message being decoded: " << line << std::endl;
                     
                 int firstColon = line.find(":");
                 if (line.substr(0, firstColon) == clientContact.getName()) {
