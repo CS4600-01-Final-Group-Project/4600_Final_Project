@@ -31,7 +31,7 @@ std::string decode(std::string encryptedMessage, const Contact& clientContact)
 
     std::string encodedMessage = encryptedMessage.substr(0, firstColon);
     std::string base64EncodedKey = encryptedMessage.substr(firstColon + 1, secondColon);
-    std::string mac = encryptedMessage.substr(secondColon + 1);
+    std::string encodedMac = encryptedMessage.substr(secondColon + 1);
 
     std::cout << std::endl;
     std::cout << "encoded message from decode: " << encodedMessage << std::endl;
@@ -40,12 +40,12 @@ std::string decode(std::string encryptedMessage, const Contact& clientContact)
     std::cout << "encoded Key from decode: " << base64EncodedKey << std::endl;
 
     std::cout << std::endl;
-    std::cout << "encoded mac from decode: " << mac << std::endl;
+    std::cout << "encoded mac from decode: " << encodedMac << std::endl;
 
     // Decode the key and message
     std::string decodedKey = base64_decode(base64EncodedKey);
     std::string decodedMessage = base64_decode(encodedMessage);
-    std::string decodedMac = base64_decode(encodedMessage);
+    std::string decodedMac = base64_decode(encodedMac);
 
     // Debug: Print decoded key and message in hex
     std::cout << std::endl;
@@ -105,7 +105,14 @@ std::string decode(std::string encryptedMessage, const Contact& clientContact)
         return "";
     }
 
-    if (memcmp(generatedMacForCheck, decodedMac.c_str(), mac_len) == 0) {
+    std::cout << "MAC from sender (decoded): ";
+    for (unsigned int i = 0; i < decodedMac.size(); ++i) {
+        std::cout << std::hex << static_cast<int>(static_cast<unsigned char>(decodedMac[i])) << " ";
+    }
+    std::cout << std::dec << std::endl;
+
+    // Check if the MAC is valid
+    if (decodedMac.size() == mac_len && memcmp(generatedMacForCheck, reinterpret_cast<const unsigned char*>(decodedMac.c_str()), mac_len) == 0) {
         std::cout << "MAC verification succeeded!" << std::endl;
     }
     else {
